@@ -1,0 +1,72 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/lorgio/Documentos/codigo/c#/Forma3D/Forma3D.csproj": {}
+  },
+  "projects": {
+    "/home/lorgio/Documentos/codigo/c#/Forma3D/Forma3D.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/lorgio/Documentos/codigo/c#/Forma3D/Forma3D.csproj",
+        "projectName": "Forma3D",
+        "projectPath": "/home/lorgio/Documentos/codigo/c#/Forma3D/Forma3D.csproj",
+        "packagesPath": "/home/lorgio/.nuget/packages/",
+        "outputPath": "/home/lorgio/Documentos/codigo/c#/Forma3D/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/lorgio/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "OpenTK": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/8.0.405/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net8.0/Forma3D.csproj.AssemblyReference.cache
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net8.0/Forma3D.GeneratedMSBuildEditorConfig.editorconfig
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net8.0/Forma3D.AssemblyInfoInputs.cache
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net8.0/Forma3D.AssemblyInfo.cs
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net8.0/Forma3D.csproj.CoreCompileInputs.cache

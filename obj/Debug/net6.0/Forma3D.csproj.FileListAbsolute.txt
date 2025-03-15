@@ -1,0 +1,17 @@
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/Forma3D.csproj.AssemblyReference.cache
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/Forma3D.GeneratedMSBuildEditorConfig.editorconfig
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/Forma3D.AssemblyInfoInputs.cache
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/Forma3D.AssemblyInfo.cs
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/Forma3D.csproj.CoreCompileInputs.cache
+/home/lorgio/Documentos/codigo/c#/Forma3D/bin/Debug/net6.0/Forma3D
+/home/lorgio/Documentos/codigo/c#/Forma3D/bin/Debug/net6.0/Forma3D.deps.json
+/home/lorgio/Documentos/codigo/c#/Forma3D/bin/Debug/net6.0/Forma3D.runtimeconfig.json
+/home/lorgio/Documentos/codigo/c#/Forma3D/bin/Debug/net6.0/Forma3D.dll
+/home/lorgio/Documentos/codigo/c#/Forma3D/bin/Debug/net6.0/Forma3D.pdb
+/home/lorgio/Documentos/codigo/c#/Forma3D/bin/Debug/net6.0/OpenTK.dll
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/Forma3D.dll
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/refint/Forma3D.dll
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/Forma3D.pdb
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/Forma3D.genruntimeconfig.cache
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/ref/Forma3D.dll
+/home/lorgio/Documentos/codigo/c#/Forma3D/obj/Debug/net6.0/Forma3D.csproj.Up2Date
