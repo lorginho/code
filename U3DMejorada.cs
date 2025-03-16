@@ -112,7 +112,7 @@ namespace LetraU3DMejorada
             else
                 GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
             
-            // Dibujar ejes si están habilitados
+            // Dibujar ejes si están habilitados 
             if (showAxes)
                 DrawAxes();
             
