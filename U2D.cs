@@ -8,6 +8,7 @@ namespace LetraUProgram
 {
     public class Game : GameWindow
     {
+        
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title) { }
 
         protected override void OnLoad(EventArgs e)
@@ -76,10 +77,11 @@ namespace LetraUProgram
 
     class Program
     {
-        // static void Main(string[] args)
-         static void Main0(string[] args)
+         static void Main(string[] args)
+        // static void Main0(string[] args)
         {
-            using (Game game = new Game(800, 600, "Letra U en 2D, Blanco s/ Gris"))
+            
+            using (Game game = new Game(400, 300, "Letra U en 2D, Blanco s/ Gris"))
             {
                 game.Run(60.0);
             }

@@ -292,7 +292,7 @@ namespace LetraUWireframe
 
     class Program
     {
-        // static void Main(string[] args)
+        //static void Main(string[] args)
         static void Main3(string[] args)
         {
             using (Game game = new Game(800, 600, "Letra U en 3D c/Rotacion, Eje, solo Aristas"))
