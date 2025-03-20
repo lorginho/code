@@ -9,19 +9,22 @@ namespace LetraUProgram
     public class Game : GameWindow
     {
         // Variables para la posición, tamaño y rotación de la "U"
-        private float posX = -50, posY = 50; // Posición inicial de la "U"
+        private float posX = -0, posY = 0; // Posición inicial de la "U"
         private float ancho = 40, altura = 60, grosor = 10; // Tamaño de la "U"
         private float escala = 1.0f; // Escala de la "U"
         private float rotacion = 0.0f; // Rotación de la "U" en grados
 
+        // Constructor de la clase Game
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title) { }
 
+        // Método que se llama cuando se carga la ventana
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             GL.ClearColor(0.2f, 0.2f, 0.2f, 1.0f); // Fondo gris oscuro
         }
 
+        // Método que se llama en cada frame para renderizar
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
@@ -45,6 +48,7 @@ namespace LetraUProgram
             GL.Scale(escala, escala, 1); // Escalar la "U"
             GL.Rotate(rotacion, 0, 0, 1); // Rotar la "U"
             
+            // Dibujar la letra "U"
             DibujarLetraU();
             
             GL.PopMatrix(); // Restaurar el estado de la matriz (ignorar transformaciones para los ejes)
@@ -53,6 +57,7 @@ namespace LetraUProgram
             SwapBuffers();
         }
 
+        // Método para dibujar los ejes X e Y
         private void DibujarEjes()
         {
             GL.Begin(PrimitiveType.Lines);
@@ -70,6 +75,7 @@ namespace LetraUProgram
             GL.End();
         }
 
+        // Método para dibujar la letra "U"
         private void DibujarLetraU()
         {
             GL.Begin(PrimitiveType.Quads);
@@ -103,12 +109,14 @@ namespace LetraUProgram
             GL.End();
         }
 
+        // Método que se llama cuando se redimensiona la ventana
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
             GL.Viewport(0, 0, Width, Height); // Ajustar el viewport al nuevo tamaño
         }
 
+        // Método que se llama en cada frame para actualizar la lógica del juego
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
@@ -126,11 +134,14 @@ namespace LetraUProgram
             if (keyState.IsKeyDown(Key.Down))
                 posY -= velocidad;
             
-            // Escalar la "U" con las teclas + y -
-            if (keyState.IsKeyDown(Key.Plus) || keyState.IsKeyDown(Key.KeypadPlus))
-                escala += 0.1f;
-            if (keyState.IsKeyDown(Key.Minus) || keyState.IsKeyDown(Key.KeypadMinus))
-                escala -= 0.1f;
+            // Escalar la "U" con las teclas + y -            
+            if ( escala < 2.0f)
+                if (( keyState.IsKeyDown(Key.Plus) || keyState.IsKeyDown(Key.KeypadPlus) ))                                 
+                    escala += 0.01f;
+            
+            if ( escala > 0.5f)
+                if (keyState.IsKeyDown(Key.Minus) || keyState.IsKeyDown(Key.KeypadMinus))
+                    escala -= 0.01f;
             
             // Rotar la "U" con las teclas R y T
             if (keyState.IsKeyDown(Key.R))
@@ -142,6 +153,7 @@ namespace LetraUProgram
             if (keyState.IsKeyDown(Key.Escape))
                 Exit();
         }
+
     }
 
     class Program
@@ -150,7 +162,7 @@ namespace LetraUProgram
         {
             using (Game game = new Game(800, 800, "Letra U en 2D con Ejes Fijos"))
             {
-                game.Run(60.0); // Iniciar el bucle principal a 60 FPS
+                game.Run(60.0);
             }
         }
     }
