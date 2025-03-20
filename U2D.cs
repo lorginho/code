@@ -1,10 +1,9 @@
-﻿using System;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace LetraUProgram
+namespace LetraUProgram_00
 {
     public class Game : GameWindow
     {
@@ -14,6 +13,8 @@ namespace LetraUProgram
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            GL.ClearColor(0.2f, 0.2f, 0.2f, 1.0f); 
+            // Fondo gris oscuro
             GL.ClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         }
 
@@ -25,6 +26,7 @@ namespace LetraUProgram
             
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadIdentity();
+            // Proyección ortográfica
             GL.Ortho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
             
             // Dibujar la letra U con bordes rectos (sin curvas)
@@ -77,13 +79,13 @@ namespace LetraUProgram
 
     class Program
     {
-         //static void Main(string[] args)
+         //static void Main_00(string[] args)
          static void Main0(string[] args)
         {
             
             using (Game game = new Game(400, 300, "Letra U en 2D, Blanco s/ Gris"))
             {
-                game.Run(60.0);
+                game.Run(30.0);
             }
         }
     }

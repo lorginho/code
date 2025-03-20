@@ -1,2 +1,3 @@
 Proyecto de Programacion Grafica ELE102
-Forma 3D: U
+
+U2D.cs: Programa en C# que utiliza la biblioteca OpenTK para crear una ventana gráfica y dibujar la letra "U" en 2D
