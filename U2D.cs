@@ -77,8 +77,8 @@ namespace LetraUProgram
 
     class Program
     {
-         static void Main(string[] args)
-        // static void Main0(string[] args)
+         //static void Main(string[] args)
+         static void Main0(string[] args)
         {
             
             using (Game game = new Game(400, 300, "Letra U en 2D, Blanco s/ Gris"))
