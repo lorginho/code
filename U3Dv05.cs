@@ -8,8 +8,8 @@ namespace LetraU3Dv05
 {
     public class Game : GameWindow
     {
-        private float rotationX = 0.0f;
-        private float rotationY = 0.0f;
+        private float rotationX = 9.0f;
+        private float rotationY = -12.0f;
         private const float rotationSpeed = 1.5f;
         
         // Color del fondo y de la U
@@ -36,9 +36,20 @@ namespace LetraU3Dv05
         private bool lightingEnabled = true;
 
         // Variable que representa el centro geométrico de la U
-        private Vector3 CentroGeometricoU = new Vector3(0.2f, 0.2f, 0.2f);
+        private Vector3 CentroGeometricoU;
 
-        public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title) { }
+        // Variable para guardar la posición inicial
+        private Vector3 posicionInicialU;
+
+        // Constructor modificado para aceptar la posición inicial de la U
+        public Game(int width, int height, string title, Vector3 posicionInicialU) 
+            : base(width, height, GraphicsMode.Default, title)
+        {
+            // Guardar la posición inicial
+            this.posicionInicialU = posicionInicialU;
+            // Inicializar la posición actual de la U
+            CentroGeometricoU = posicionInicialU;
+        }
 
         protected override void OnLoad(EventArgs e)
         {
@@ -133,14 +144,13 @@ namespace LetraU3Dv05
             
             // Dibujar la letra U en 3D
             DrawU3D();
-            
+
             // Mostrar información en el título de la ventana
-            Title = $"Letra U 3D - Centro Geométrico: X={CentroGeometricoU.X:F1} Y={CentroGeometricoU.Y:F1} Z={CentroGeometricoU.Z:F1} | " +
-                    $"Rotación: X={rotationX:F1}° Y={rotationY:F1}° | " +
-                    $"Iluminación: {(lightingEnabled ? "ON" : "OFF")} | " +
-                    $"Modo: {(wireframeMode ? "Wireframe" : "Sólido")} | " +
-                    $"Ejes: {(showAxes ? "Visibles" : "Ocultos")}";
-            
+            Title = $"Letra U 3D - Centro Geom.: X={CentroGeometricoU.X:F1} Y={CentroGeometricoU.Y:F1} Z={CentroGeometricoU.Z:F1} | " +
+                    $"Pos. Inicial: X={posicionInicialU.X:F1} Y={posicionInicialU.Y:F1} Z={posicionInicialU.Z:F1} | " +
+                    $"Rotac.: X={rotationX:F1}° Y={rotationY:F1}° ";
+
+
             SwapBuffers();
         }
 
@@ -284,10 +294,10 @@ namespace LetraU3Dv05
                 rotationY = 0.0f;
             }
             
-            // Restablecer posición de la U al origen
+            // Restablecer posición de la U a la posición inicial
             if (keyState.IsKeyDown(Key.P) && !previousKeyState.IsKeyDown(Key.P))
             {
-                CentroGeometricoU = new Vector3(0.0f, 0.0f, 0.0f);
+                CentroGeometricoU = posicionInicialU;
             }
             
             // Modo de visualización (wireframe)
@@ -310,7 +320,7 @@ namespace LetraU3Dv05
                 thickness -= 0.01f;
                 
             // Mover la U en el espacio 3D (con límites)
-            float moveAmount = 0.02f; // Cantidad de movimiento
+            float moveAmount = 0.03f; // Cantidad de movimiento
             float limit = axisLength * 0.8f; // Límite para que la U no se salga del plano
 
             if (keyState.IsKeyDown(Key.I)) // Mover hacia arriba en Y
@@ -337,7 +347,12 @@ namespace LetraU3Dv05
     {
         static void Main(string[] args)
         {
-            using (Game game = new Game(800, 600, "Letra U en 3D c/Rotacion, Eje, y Colores"))
+            // Definir la posición inicial de la U (por ejemplo, desplazada a la derecha y arriba)
+            // Rango Valores permitidos (-1.0 ; 1.0) para x,y,z
+            Vector3 posicionInicialU = new Vector3(0.4f, 0.4f, 0.4f);
+
+            // Crear la instancia de Game con la posición inicial
+            using (Game game = new Game(1920, 1080, "Letra U en 3D", posicionInicialU))
             {
                 game.Run(60.0);
             }
