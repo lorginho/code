@@ -349,7 +349,7 @@ namespace LetraU3Dv05
         {
             // Definir la posición inicial de la U (por ejemplo, desplazada a la derecha y arriba)
             // Rango Valores permitidos (-1.0 ; 1.0) para x,y,z
-            Vector3 posicionInicialU = new Vector3(0.4f, 0.4f, 0.3f);
+            Vector3 posicionInicialU = new Vector3(0.4f, 0.4f, 0.1f);
 
             // Crear la instancia de Game con la posición inicial
             using (Game game = new Game(1920, 1080, "Letra U en 3D", posicionInicialU))
