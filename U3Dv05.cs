@@ -7,7 +7,7 @@ using OpenTK.Input;
 namespace LetraU3Dv05
 {
     public class Game : GameWindow
-    {
+    {do
         private float rotationX = 9.0f;
         private float rotationY = -12.0f;
         private const float rotationSpeed = 1.5f;
