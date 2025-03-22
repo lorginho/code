@@ -9,7 +9,7 @@ namespace LetraUProgram
     public class Game : GameWindow
     {
         // Variables para la posición, tamaño y rotación de la "U"
-        private float posX = -0, posY = 0; // Posición inicial de la "U"
+        private float posX = 0, posY = 0; // Posición inicial de la "U"
         private float ancho = 40, altura = 60, grosor = 10; // Tamaño de la "U"
         private float escala = 1.0f; // Escala de la "U"
         private float rotacion = 0.0f; // Rotación de la "U" en grados
@@ -117,50 +117,56 @@ namespace LetraUProgram
         }
 
         // Método que se llama en cada frame para actualizar la lógica del juego
-        protected override void OnUpdateFrame(FrameEventArgs e)
-        {
-            base.OnUpdateFrame(e);
-            
-            var keyState = Keyboard.GetState();
-            
-            // Mover la "U" con las teclas de dirección
-            float velocidad = 2.0f; // Velocidad de movimiento
-            if (keyState.IsKeyDown(Key.Left))
-                posX -= velocidad;
-            if (keyState.IsKeyDown(Key.Right))
-                posX += velocidad;
-            if (keyState.IsKeyDown(Key.Up))
-                posY += velocidad;
-            if (keyState.IsKeyDown(Key.Down))
-                posY -= velocidad;
-            
-            // Escalar la "U" con las teclas + y -            
-            if ( escala < 2.0f)
-                if (( keyState.IsKeyDown(Key.Plus) || keyState.IsKeyDown(Key.KeypadPlus) ))                                 
-                    escala += 0.01f;
-            
-            if ( escala > 0.5f)
-                if (keyState.IsKeyDown(Key.Minus) || keyState.IsKeyDown(Key.KeypadMinus))
-                    escala -= 0.01f;
-            
-            // Rotar la "U" con las teclas R y T
-            if (keyState.IsKeyDown(Key.R))
-                rotacion += 2.0f;
-            if (keyState.IsKeyDown(Key.T))
-                rotacion -= 2.0f;
-            
-            // Salir del programa si se presiona Escape
-            if (keyState.IsKeyDown(Key.Escape))
-                Exit();
+        
+
+    protected override void OnUpdateFrame(FrameEventArgs e)
+    {
+        base.OnUpdateFrame(e);
+        
+        var keyState = Keyboard.GetState();
+        
+        // Mover la "U" con las teclas de dirección
+        float velocidad = 2.0f; // Velocidad de movimiento
+        if (keyState.IsKeyDown(Key.Left))
+            posX -= velocidad;
+        if (keyState.IsKeyDown(Key.Right))
+            posX += velocidad;
+        if (keyState.IsKeyDown(Key.Up))
+            posY += velocidad;
+        if (keyState.IsKeyDown(Key.Down))
+            posY -= velocidad;
+        
+        // Escalar la "U" con las teclas + y -            
+        if (escala < 2.0f)
+            if ((keyState.IsKeyDown(Key.Plus) || keyState.IsKeyDown(Key.KeypadPlus)))                                 
+                escala += 0.01f;
+        
+        if (escala > 0.5f)
+            if (keyState.IsKeyDown(Key.Minus) || keyState.IsKeyDown(Key.KeypadMinus))
+                escala -= 0.01f;
+        
+        // Rotar la "U" con las teclas R y T
+        if (keyState.IsKeyDown(Key.R))
+            rotacion += 2.0f;
+        if (keyState.IsKeyDown(Key.T))
+            rotacion -= 2.0f;
+        
+        // Actualizar el título de la ventana con los valores de las variables
+        Title = $"Letra U en 2D con Ejes Fijos | PosX: {posX:F2} | PosY: {posY:F2} | Escala: {escala:F2} | Rotación: {rotacion:F2}";
+        
+        // Salir del programa si se presiona Escape
+        if (keyState.IsKeyDown(Key.Escape))
+            Exit();
+    }
+
         }
 
-    }
 
     class Program
     {
         static void Main(string[] args)
         {
-            using (Game game = new Game(800, 800, "Letra U en 2D con Ejes Fijos"))
+            using (Game game = new Game(800, 800, "Letra U en 2D"))
             {
                 game.Run(60.0);
             }
