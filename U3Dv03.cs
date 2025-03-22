@@ -4,7 +4,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace LetraU3DMejorada
+namespace LetraU3Dv03
 {
     public class Game : GameWindow
     {
@@ -29,6 +29,12 @@ namespace LetraU3DMejorada
         // Iluminación
         private bool lightingEnabled = true;
 
+        // Vector de traslación para mover la U
+        private Vector3 translation = new Vector3(0.0f, 0.0f, 0.0f);
+
+        // Posición inicial (centro geométrico de la U)
+        private Vector3 initialPosition;
+
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title) { }
 
         protected override void OnLoad(EventArgs e)
@@ -37,6 +43,13 @@ namespace LetraU3DMejorada
             GL.ClearColor(backgroundColor);
             GL.Enable(EnableCap.DepthTest);
             SetupLighting();
+
+            // Calcular la posición inicial (centro geométrico de la U)
+            initialPosition = new Vector3(
+                0.0f,                            // Centrada en X
+                -height / 2 + thickness / 2,     // Centrada en Y (base de la U + mitad del grosor)
+                0.0f                             // Centrada en Z
+            );
         }
         
         private void SetupLighting()
@@ -120,7 +133,8 @@ namespace LetraU3DMejorada
             DrawU3D();
             
             // Mostrar información en el título de la ventana
-             Title = $"Letra U 3D - Rotación: X={rotationX:F1}° Y={rotationY:F1}° | " +
+            Title = $"Letra U 3D - Posición: X={translation.X:F1} Y={translation.Y:F1} Z={translation.Z:F1} | " +
+                    $"Rotación: X={rotationX:F1}° Y={rotationY:F1}° | " +
                     $"Iluminación: {(lightingEnabled ? "ON" : "OFF")} | " +
                     $"Modo: {(wireframeMode ? "Wireframe" : "Sólido")} | " +
                     $"Ejes: {(showAxes ? "Visibles" : "Ocultos")}";
@@ -158,22 +172,25 @@ namespace LetraU3DMejorada
 
         private void DrawU3D()
         {
+            // Aplicar la traslación y la posición inicial a las coordenadas de la U
+            Vector3 offset = translation + initialPosition;
+
             // Parte izquierda de la U
             DrawCuboid(
-                -width/2, -height/2, -depth/2,  // Esquina inferior izquierda trasera
-                -width/2 + thickness, height/2, depth/2  // Esquina superior derecha frontal
+                -width / 2 + offset.X, -height / 2 + offset.Y, -depth / 2 + offset.Z,  // Esquina inferior izquierda trasera
+                -width / 2 + thickness + offset.X, height / 2 + offset.Y, depth / 2 + offset.Z  // Esquina superior derecha frontal
             );
             
             // Parte inferior de la U
             DrawCuboid(
-                -width/2, -height/2, -depth/2,  // Esquina inferior izquierda trasera
-                width/2, -height/2 + thickness, depth/2  // Esquina superior derecha frontal
+                -width / 2 + offset.X, -height / 2 + offset.Y, -depth / 2 + offset.Z,  // Esquina inferior izquierda trasera
+                width / 2 + offset.X, -height / 2 + thickness + offset.Y, depth / 2 + offset.Z  // Esquina superior derecha frontal
             );
             
             // Parte derecha de la U
             DrawCuboid(
-                width/2 - thickness, -height/2, -depth/2,  // Esquina inferior izquierda trasera
-                width/2, height/2, depth/2  // Esquina superior derecha frontal
+                width / 2 - thickness + offset.X, -height / 2 + offset.Y, -depth / 2 + offset.Z,  // Esquina inferior izquierda trasera
+                width / 2 + offset.X, height / 2 + offset.Y, depth / 2 + offset.Z  // Esquina superior derecha frontal
             );
         }
 
@@ -286,6 +303,20 @@ namespace LetraU3DMejorada
             if (keyState.IsKeyDown(Key.G) && thickness > 0.05f)
                 thickness -= 0.01f;
                 
+            // Mover la U en el espacio 3D
+            if (keyState.IsKeyDown(Key.I)) // Mover hacia arriba en Y
+                translation.Y += 0.1f;
+            if (keyState.IsKeyDown(Key.K)) // Mover hacia abajo en Y
+                translation.Y -= 0.1f;
+            if (keyState.IsKeyDown(Key.J)) // Mover hacia la izquierda en X
+                translation.X -= 0.1f;
+            if (keyState.IsKeyDown(Key.L)) // Mover hacia la derecha en X
+                translation.X += 0.1f;
+            if (keyState.IsKeyDown(Key.U)) // Mover hacia adelante en Z
+                translation.Z += 0.1f;
+            if (keyState.IsKeyDown(Key.O)) // Mover hacia atrás en Z
+                translation.Z -= 0.1f;
+                
             // Guardar estado de teclas para el siguiente frame
             previousKeyState = keyState;
         }
@@ -295,10 +326,9 @@ namespace LetraU3DMejorada
 
     class Program
     {
-         //static void Main(string[] args)
-         static void Main(string[] args)
+        static void Main(string[] args)
         {
-            using (Game game = new Game(800, 600, "Letra U en 3D c/Rotacion, Eje, y Colores"))
+            using (Game game = new Game(1000, 1000, "Letra U en 3D c/Rotacion, Eje, y Colores"))
             {
                 game.Run(60.0);
             }

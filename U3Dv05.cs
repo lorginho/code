@@ -4,7 +4,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace LetraU3DMejorada
+namespace LetraU3Dv05
 {
     public class Game : GameWindow
     {
@@ -16,11 +16,17 @@ namespace LetraU3DMejorada
         private Color4 backgroundColor = new Color4(0.05f, 0.1f, 0.2f, 1.0f); // Azul oscuro
         private Color4 letterColor = new Color4(0.9f, 0.5f, 0.1f, 1.0f); // Naranja
         
-        // Parámetros de la U
-        private float thickness = 0.2f;
-        private float width = 1.0f;
-        private float height = 1.5f;
-        private float depth = 0.4f;
+        // Longitud de los ejes
+        private float axisLength = 1.5f;
+
+        // Tamaño inicial de la U (10% de axisLength)
+        private float initialSize = 0.15f; // 10% de 1.5f
+
+        // Tamaño de la U
+        private float width;
+        private float height;
+        private float depth;
+        private float thickness;
         
         // Modo de visualización
         private bool wireframeMode = false;
@@ -28,6 +34,9 @@ namespace LetraU3DMejorada
         
         // Iluminación
         private bool lightingEnabled = true;
+
+        // Variable que representa el centro geométrico de la U
+        private Vector3 CentroGeometricoU = new Vector3(0.2f, 0.2f, 0.2f);
 
         public Game(int width, int height, string title) : base(width, height, GraphicsMode.Default, title) { }
 
@@ -37,6 +46,12 @@ namespace LetraU3DMejorada
             GL.ClearColor(backgroundColor);
             GL.Enable(EnableCap.DepthTest);
             SetupLighting();
+
+            // Inicializar el tamaño de la U como el 10% de axisLength
+            width = initialSize;
+            height = initialSize * 1.5f; // Mantener la proporción original
+            depth = initialSize * 0.4f;  // Mantener la proporción original
+            thickness = initialSize * 0.2f; // Mantener la proporción original
         }
         
         private void SetupLighting()
@@ -120,7 +135,8 @@ namespace LetraU3DMejorada
             DrawU3D();
             
             // Mostrar información en el título de la ventana
-             Title = $"Letra U 3D - Rotación: X={rotationX:F1}° Y={rotationY:F1}° | " +
+            Title = $"Letra U 3D - Centro Geométrico: X={CentroGeometricoU.X:F1} Y={CentroGeometricoU.Y:F1} Z={CentroGeometricoU.Z:F1} | " +
+                    $"Rotación: X={rotationX:F1}° Y={rotationY:F1}° | " +
                     $"Iluminación: {(lightingEnabled ? "ON" : "OFF")} | " +
                     $"Modo: {(wireframeMode ? "Wireframe" : "Sólido")} | " +
                     $"Ejes: {(showAxes ? "Visibles" : "Ocultos")}";
@@ -130,25 +146,23 @@ namespace LetraU3DMejorada
 
         private void DrawAxes()
         {
-            float axisLength = 1.5f;
-            
             GL.Disable(EnableCap.Lighting);
             GL.Begin(PrimitiveType.Lines);
             
-            // Eje X - Rojo
+            // Eje X - Rojo (de -axisLength a axisLength)
             GL.Color3(1.0f, 0.0f, 0.0f);
-            GL.Vertex3(0, 0, 0);
-            GL.Vertex3(axisLength, 0, 0);
+            GL.Vertex3(-axisLength, 0, 0); // Parte negativa
+            GL.Vertex3(axisLength, 0, 0);  // Parte positiva
             
-            // Eje Y - Verde
+            // Eje Y - Verde (de -axisLength a axisLength)
             GL.Color3(0.0f, 1.0f, 0.0f);
-            GL.Vertex3(0, 0, 0);
-            GL.Vertex3(0, axisLength, 0);
+            GL.Vertex3(0, -axisLength, 0); // Parte negativa
+            GL.Vertex3(0, axisLength, 0);  // Parte positiva
             
-            // Eje Z - Azul
+            // Eje Z - Azul (de -axisLength a axisLength)
             GL.Color3(0.0f, 0.0f, 1.0f);
-            GL.Vertex3(0, 0, 0);
-            GL.Vertex3(0, 0, axisLength);
+            GL.Vertex3(0, 0, -axisLength); // Parte negativa
+            GL.Vertex3(0, 0, axisLength);  // Parte positiva
             
             GL.End();
             
@@ -158,22 +172,25 @@ namespace LetraU3DMejorada
 
         private void DrawU3D()
         {
+            // Aplicar el centro geométrico a las coordenadas de la U
+            Vector3 offset = CentroGeometricoU;
+
             // Parte izquierda de la U
             DrawCuboid(
-                -width/2, -height/2, -depth/2,  // Esquina inferior izquierda trasera
-                -width/2 + thickness, height/2, depth/2  // Esquina superior derecha frontal
+                -width / 2 + offset.X, -height / 2 + offset.Y, -depth / 2 + offset.Z,  // Esquina inferior izquierda trasera
+                -width / 2 + thickness + offset.X, height / 2 + offset.Y, depth / 2 + offset.Z  // Esquina superior derecha frontal
             );
             
             // Parte inferior de la U
             DrawCuboid(
-                -width/2, -height/2, -depth/2,  // Esquina inferior izquierda trasera
-                width/2, -height/2 + thickness, depth/2  // Esquina superior derecha frontal
+                -width / 2 + offset.X, -height / 2 + offset.Y, -depth / 2 + offset.Z,  // Esquina inferior izquierda trasera
+                width / 2 + offset.X, -height / 2 + thickness + offset.Y, depth / 2 + offset.Z  // Esquina superior derecha frontal
             );
             
             // Parte derecha de la U
             DrawCuboid(
-                width/2 - thickness, -height/2, -depth/2,  // Esquina inferior izquierda trasera
-                width/2, height/2, depth/2  // Esquina superior derecha frontal
+                width / 2 - thickness + offset.X, -height / 2 + offset.Y, -depth / 2 + offset.Z,  // Esquina inferior izquierda trasera
+                width / 2 + offset.X, height / 2 + offset.Y, depth / 2 + offset.Z  // Esquina superior derecha frontal
             );
         }
 
@@ -261,10 +278,16 @@ namespace LetraU3DMejorada
                 rotationY += rotationSpeed;
                 
             // Restablecer rotación
-            if (keyState.IsKeyDown(Key.R))
+            if (keyState.IsKeyDown(Key.R) && !previousKeyState.IsKeyDown(Key.R))
             {
                 rotationX = 0.0f;
                 rotationY = 0.0f;
+            }
+            
+            // Restablecer posición de la U al origen
+            if (keyState.IsKeyDown(Key.P) && !previousKeyState.IsKeyDown(Key.P))
+            {
+                CentroGeometricoU = new Vector3(0.0f, 0.0f, 0.0f);
             }
             
             // Modo de visualización (wireframe)
@@ -286,6 +309,23 @@ namespace LetraU3DMejorada
             if (keyState.IsKeyDown(Key.G) && thickness > 0.05f)
                 thickness -= 0.01f;
                 
+            // Mover la U en el espacio 3D (con límites)
+            float moveAmount = 0.02f; // Cantidad de movimiento
+            float limit = axisLength * 0.8f; // Límite para que la U no se salga del plano
+
+            if (keyState.IsKeyDown(Key.I)) // Mover hacia arriba en Y
+                CentroGeometricoU.Y = Math.Min(CentroGeometricoU.Y + moveAmount, limit);
+            if (keyState.IsKeyDown(Key.K)) // Mover hacia abajo en Y
+                CentroGeometricoU.Y = Math.Max(CentroGeometricoU.Y - moveAmount, -limit);
+            if (keyState.IsKeyDown(Key.J)) // Mover hacia la izquierda en X
+                CentroGeometricoU.X = Math.Max(CentroGeometricoU.X - moveAmount, -limit);
+            if (keyState.IsKeyDown(Key.L)) // Mover hacia la derecha en X
+                CentroGeometricoU.X = Math.Min(CentroGeometricoU.X + moveAmount, limit);
+            if (keyState.IsKeyDown(Key.U)) // Mover hacia adelante en Z
+                CentroGeometricoU.Z = Math.Min(CentroGeometricoU.Z + moveAmount, limit);
+            if (keyState.IsKeyDown(Key.O)) // Mover hacia atrás en Z
+                CentroGeometricoU.Z = Math.Max(CentroGeometricoU.Z - moveAmount, -limit);
+                
             // Guardar estado de teclas para el siguiente frame
             previousKeyState = keyState;
         }
@@ -295,8 +335,7 @@ namespace LetraU3DMejorada
 
     class Program
     {
-         //static void Main(string[] args)
-         static void Main(string[] args)
+        static void Main(string[] args)
         {
             using (Game game = new Game(800, 600, "Letra U en 3D c/Rotacion, Eje, y Colores"))
             {
