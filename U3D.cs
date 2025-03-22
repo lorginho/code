@@ -194,7 +194,7 @@ namespace LetraU3D
     class Program
     {
         //static void Main(string[] args)
-        static void Main1(string[] args)
+        static void Main(string[] args)
         {
             using (Game game = new Game(800, 600, "Letra U en 3D c/Rotacion, Blanco s/ Gris"))
             {
