@@ -309,7 +309,7 @@ namespace LetraU3Dv05
                 showAxes = !showAxes;
                 
             // Activar/desactivar iluminación
-            if (keyState.IsKeyDown(Key.L) && !previousKeyState.IsKeyDown(Key.L))
+            if (keyState.IsKeyDown(Key.X) && !previousKeyState.IsKeyDown(Key.X))
                 lightingEnabled = !lightingEnabled;
                 
             // Modificar grosor
@@ -352,7 +352,7 @@ namespace LetraU3Dv05
             Vector3 posicionInicialU = new Vector3(0.1f, 0.2f, 0.3f);
 
             // Crear la instancia de Game con la posición inicial
-            using (Game game = new Game(1920, 1080, "Letra U en 3D", posicionInicialU))
+            using (Game game = new Game(800,600, "Letra U en 3D", posicionInicialU))
             {
                 game.Run(60.0);
             }
