@@ -6,8 +6,37 @@ using OpenTK.Input;
 
 namespace LetraU3Dv05
 {
+    
+    
+    
+//*************    
+    public class LetraU
+    {
+        public Vector3 Posicion { get; set; }
+        public Vector3 Rotacion { get; set; }
+
+        public LetraU(Vector3 posicionInicial)
+        {
+            Posicion = posicionInicial;
+            Rotacion = Vector3.Zero;
+        }
+    }
+
+//*************************
+
+    
     public class Game : GameWindow
     {
+     
+//*********************************     
+        private List<LetraU> letrasU;
+        private int letraSeleccionada = 0; // Indica cuál "U" se está moviendo
+     
+     
+
+//********************************     
+     
+     
         private float rotationX = 9.0f;
         private float rotationY = -12.0f;
         private const float rotationSpeed = 1.5f;
@@ -41,6 +70,11 @@ namespace LetraU3Dv05
         // Variable para guardar la posición inicial
         private Vector3 posicionInicialU;
 
+//*******
+        // Lista de Vector3 para las posiciones de las "U"
+        private List<Vector3> posicionesU;
+
+//*******
         // Constructor modificado para aceptar la posición inicial de la U
         public Game(int width, int height, string title, Vector3 posicionInicialU) 
             : base(width, height, GraphicsMode.Default, title)
@@ -63,6 +97,30 @@ namespace LetraU3Dv05
             height = initialSize * 1.5f; // Mantener la proporción original
             depth = initialSize * 0.4f;  // Mantener la proporción original
             thickness = initialSize * 0.2f; // Mantener la proporción original
+
+
+            letrasU = new List<LetraU>
+            {
+                
+                new LetraU(new Vector3(0.0f, 0.0f, 0.0f)),  // Primera U en el centro                
+                new LetraU(new Vector3(-0.50f, -0.5f, -0.5f))   // Tercer U desplazada a la derecha
+            };
+
+/*
+
+//*****
+            // Instanciamos n U con distintas posiciones
+            posicionesU = new List<Vector3>
+            {
+                new Vector3(0.0f, 0.0f, 0.0f),  // Centro
+                new Vector3(-0.5f, -0.5f, 0.0f),  // Centro
+                new Vector3(0.5f, 0.5f, 0.5f)     // A la derecha
+                
+            };
+//******
+
+*/
+
         }
         
         private void SetupLighting()
@@ -96,6 +154,8 @@ namespace LetraU3Dv05
             GL.Material(MaterialFace.Front, MaterialParameter.Shininess, materialShininess);
         }
 
+
+/*
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             base.OnRenderFrame(e);
@@ -114,11 +174,13 @@ namespace LetraU3Dv05
                 new Vector3(0.0f, 0.0f, 3.0f),
                 new Vector3(0.0f, 0.0f, 0.0f),
                 new Vector3(0.0f, 1.0f, 0.0f));
-                
+
+
             // Aplicar rotaciones
             Matrix4 rotation = Matrix4.CreateRotationX(MathHelper.DegreesToRadians(rotationX)) *
                                Matrix4.CreateRotationY(MathHelper.DegreesToRadians(rotationY));
-                
+
+
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspective);
             
@@ -145,6 +207,13 @@ namespace LetraU3Dv05
             // Dibujar la letra U en 3D
             DrawU3D();
 
+            foreach (var posicion in posicionesU)
+            {
+                CentroGeometricoU = posicion;
+                DrawU3D();  // Dibuja una U en la posición actual
+            }
+
+
             // Mostrar información en el título de la ventana
             Title = $"Letra U 3D - Centro Geom.: X={CentroGeometricoU.X:F1} Y={CentroGeometricoU.Y:F1} Z={CentroGeometricoU.Z:F1} | " +
                     $"Pos. Inicial: X={posicionInicialU.X:F1} Y={posicionInicialU.Y:F1} Z={posicionInicialU.Z:F1} | " +
@@ -153,6 +222,39 @@ namespace LetraU3Dv05
 
             SwapBuffers();
         }
+
+*/
+
+        protected override void OnRenderFrame(FrameEventArgs e)
+        {
+            base.OnRenderFrame(e);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            Matrix4 perspective = Matrix4.CreatePerspectiveFieldOfView(
+                MathHelper.DegreesToRadians(45.0f),
+                Width / (float)Height,
+                0.1f,
+                100.0f);
+            Matrix4 lookat = Matrix4.LookAt(
+                new Vector3(0.0f, 0.0f, 3.0f),
+                new Vector3(0.0f, 0.0f, 0.0f),
+                new Vector3(0.0f, 1.0f, 0.0f));
+
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadMatrix(ref perspective);
+            GL.MatrixMode(MatrixMode.Modelview);
+            GL.LoadMatrix(ref lookat);
+
+            // Dibujar todas las letras U
+            foreach (var letra in letrasU)
+            {
+                DrawU3D(letra.Posicion, letra.Rotacion);
+            }
+
+            SwapBuffers();
+        }
+
+
 
         private void DrawAxes()
         {
@@ -180,6 +282,8 @@ namespace LetraU3Dv05
                 GL.Enable(EnableCap.Lighting);
         }
 
+
+/*
         private void DrawU3D()
         {
             // Aplicar el centro geométrico a las coordenadas de la U
@@ -203,6 +307,35 @@ namespace LetraU3Dv05
                 width / 2 + offset.X, height / 2 + offset.Y, depth / 2 + offset.Z  // Esquina superior derecha frontal
             );
         }
+
+*/
+
+
+        private void DrawU3D(Vector3 posicion, Vector3 rotacion)
+        {
+            GL.PushMatrix();
+
+            // Traslación y Rotación individual
+            GL.Translate(posicion.X, posicion.Y, posicion.Z);
+            GL.Rotate(rotacion.X, 1.0f, 0.0f, 0.0f); // Rotación en X
+            GL.Rotate(rotacion.Y, 0.0f, 1.0f, 0.0f); // Rotación en Y
+            GL.Rotate(rotacion.Z, 0.0f, 0.0f, 1.0f); // Rotación en Z
+
+            // Dibujar la U
+            DrawCuboid(-width / 2, -height / 2, -depth / 2,
+                    -width / 2 + thickness, height / 2, depth / 2);
+            DrawCuboid(-width / 2, -height / 2, -depth / 2,
+                    width / 2, -height / 2 + thickness, depth / 2);
+            DrawCuboid(width / 2 - thickness, -height / 2, -depth / 2,
+                    width / 2, height / 2, depth / 2);
+
+            GL.PopMatrix();
+        }
+
+
+
+
+
 
         private void DrawCuboid(float x1, float y1, float z1, float x2, float y2, float z2)
         {
@@ -267,95 +400,42 @@ namespace LetraU3Dv05
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
-            
             var keyState = Keyboard.GetState();
-            
-            // Salir
-            if (keyState.IsKeyDown(Key.Escape))
-                Exit();
-            
-            // Rotación
-            if (keyState.IsKeyDown(Key.Up))
-                rotationX += rotationSpeed;
-                
-            if (keyState.IsKeyDown(Key.Down))
-                rotationX -= rotationSpeed;
-                
-            if (keyState.IsKeyDown(Key.Left))
-                rotationY -= rotationSpeed;
-                
-            if (keyState.IsKeyDown(Key.Right))
-                rotationY += rotationSpeed;
-                
-            // Restablecer rotación
-            if (keyState.IsKeyDown(Key.R) && !previousKeyState.IsKeyDown(Key.R))
-            {
-                rotationX = 0.0f;
-                rotationY = 0.0f;
-            }
-            
-            // Restablecer posición de la U a la posición inicial
-            if (keyState.IsKeyDown(Key.P) && !previousKeyState.IsKeyDown(Key.P))
-            {
-                CentroGeometricoU = posicionInicialU;
-            }
-            
-            // Modo de visualización (wireframe)
-            if (keyState.IsKeyDown(Key.W) && !previousKeyState.IsKeyDown(Key.W))
-                wireframeMode = !wireframeMode;
-                
-            // Mostrar/ocultar ejes
-            if (keyState.IsKeyDown(Key.A) && !previousKeyState.IsKeyDown(Key.A))
-                showAxes = !showAxes;
-                
-            // Activar/desactivar iluminación
-            if (keyState.IsKeyDown(Key.X) && !previousKeyState.IsKeyDown(Key.X))
-                lightingEnabled = !lightingEnabled;
-                
-            // Modificar grosor
-            if (keyState.IsKeyDown(Key.T) && thickness < 0.5f)
-                thickness += 0.01f;
-                
-            if (keyState.IsKeyDown(Key.G) && thickness > 0.05f)
-                thickness -= 0.01f;
-                
-            // Mover la U en el espacio 3D (con límites)
-            float moveAmount = 0.03f; // Cantidad de movimiento
-            float limit = axisLength * 0.8f; // Límite para que la U no se salga del plano
 
-            if (keyState.IsKeyDown(Key.I)) // Mover hacia arriba en Y
-                CentroGeometricoU.Y = Math.Min(CentroGeometricoU.Y + moveAmount, limit);
-            if (keyState.IsKeyDown(Key.K)) // Mover hacia abajo en Y
-                CentroGeometricoU.Y = Math.Max(CentroGeometricoU.Y - moveAmount, -limit);
-            if (keyState.IsKeyDown(Key.J)) // Mover hacia la izquierda en X
-                CentroGeometricoU.X = Math.Max(CentroGeometricoU.X - moveAmount, -limit);
-            if (keyState.IsKeyDown(Key.L)) // Mover hacia la derecha en X
-                CentroGeometricoU.X = Math.Min(CentroGeometricoU.X + moveAmount, limit);
-            if (keyState.IsKeyDown(Key.U)) // Mover hacia adelante en Z
-                CentroGeometricoU.Z = Math.Min(CentroGeometricoU.Z + moveAmount, limit);
-            if (keyState.IsKeyDown(Key.O)) // Mover hacia atrás en Z
-                CentroGeometricoU.Z = Math.Max(CentroGeometricoU.Z - moveAmount, -limit);
-                
-            // Guardar estado de teclas para el siguiente frame
-            previousKeyState = keyState;
+            // Cambiar la U seleccionada con F1 y F2
+            if (keyState.IsKeyDown(Key.F1)) letraSeleccionada = 0;
+            if (keyState.IsKeyDown(Key.F2)) letraSeleccionada = 1;
+
+            // Movimiento de la U seleccionada
+            LetraU u = letrasU[letraSeleccionada];
+            float moveSpeed = 0.05f;
+
+
+
+            // Salir del programa
+            if (keyState.IsKeyDown(Key.Escape)) Exit();
         }
-        
-        private KeyboardState previousKeyState;
     }
 
-    class Program
-    {
-        static void Main(string[] args)
+
+
+
+  
+  
+        class Program
         {
-            // Definir la posición inicial de la U (por ejemplo, desplazada a la derecha y arriba)
-            // Rango Valores permitidos (-1.0 ; 1.0) para x,y,z
-            Vector3 posicionInicialU = new Vector3(0.1f, 0.2f, 0.3f);
-
-            // Crear la instancia de Game con la posición inicial
-            using (Game game = new Game(800,600, "Letra U en 3D", posicionInicialU))
+            static void Main(string[] args)
             {
-                game.Run(60.0);
+                // Definir la posición inicial de la U (por ejemplo, desplazada a la derecha y arriba)
+                // Rango Valores permitidos (-1.0 ; 1.0) para x,y,z
+                Vector3 posicionInicialU = new Vector3(0.1f, 0.2f, 0.3f);
+
+                // Crear la instancia de Game con la posición inicial
+                using (Game game = new Game(800,600, "Letra U en 3D", posicionInicialU))
+                {
+                    game.Run(60.0);
+                }
             }
         }
     }
-}
+
