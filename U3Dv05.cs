@@ -20,7 +20,7 @@ namespace LetraU3Dv05
         private float axisLength = 1.5f;
 
         // Tamaño inicial de la U (10% de axisLength)
-        private float initialSize = 0.15f; // 10% de 1.5f
+        private float initialSize = 0.30f; // 10% de 1.5f
 
         // Tamaño de la U
         private float width;
